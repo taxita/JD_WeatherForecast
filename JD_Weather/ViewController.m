@@ -52,9 +52,6 @@
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
     ElementValue = [[NSMutableString alloc]init];
-    if ([elementName isEqualToString:@"item"]) {
-        dic = [[NSMutableDictionary alloc]init];
-    }
     if ([elementName isEqualToString:@"yweather:forecast"]) {
         [forecast addObject:attributeDict];
     }
@@ -83,24 +80,12 @@
 
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
-    NSLog(@"%@", parser);
-    NSLog(@"%@", rssParser);
-    NSLog(@"%@", wparser);
     if(parser == rssParser){
-        if (errorParsing == NO)
-        {
-            NSLog(@"XML processing done!");
-            NSLog(@"dic first: %@", dic);
-            NSLog(@"WOEID: %@", woeid);
-        } else {
-            NSLog(@"Error occurred during XML processing");
-        }
         NSString * URL = [self prepareURLWithWOEID:woeid];
         wparser = [self parseXMLFileAtURL:URL];
         [wparser parse];
     }
     else if (parser == wparser){
-        NSLog(@"%@", dic);
         NSLog(@"%@", forecast);
     }
     
